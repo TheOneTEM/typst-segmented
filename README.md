@@ -31,7 +31,7 @@ _Click on an example image to jump to the code._
 To use this package, simply add the following code to your document:
 
 ```typst
-#import "@preview/segmented:0.1.0": *
+#import "@preview/segmented:0.1.1": *
 ```
 
 **NOTE: This package is not yet listed on Typst Universe**. Instead, Clone the package into your local workspace:
