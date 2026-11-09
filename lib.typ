@@ -1,13 +1,11 @@
 /// Internal function. Takes two points with a height difference, outputs a horizontal offset such that the angle between the spanning line and the vertical axis is 10 degrees. 
-///
-/// - pos1 (): 
-/// - pos2 (): 
-/// -> ratio
 #let __internal-ten-degree-angle__(pos1, pos2) = (pos2 - pos1) * 0.17632698070846506
 
 /// Renders a 7-segment display on your document. 
 ///
 /// - width (): The width of the display. Aspect ratio is fixed at 478:697; this ratio is taken from a technical diagram for an actual segmented display.
+/// - stroke-box (color | stroke): The stroke of the surrounding box.
+/// - fill-box (none | color | gradient | tiling): The fill of the surrounding box.
 /// - fill-on (): The fill of the polygons when they are turned on.
 /// - stroke-on (stroke): The stroke of the polygons when they are turned on.
 /// - fill-off (): The fill of the polygons when they are turned off.
@@ -198,6 +196,8 @@
 /// A wrapper function to display a digit on a seven-segment display.
 ///
 /// - width (): The width of the display. Aspect ratio is fixed, about 478:697.
+/// - stroke-box (): The stroke of the surrounding box.
+/// - fill-box (): The fill of the surrounding box.
 /// - fill-on (): The fill of the polygons when they are turned on.
 /// - stroke-on (): The stroke of the polygons when they are turned on.
 /// - fill-off (): The fill of the polygons when they are turned off.
@@ -251,5 +251,5 @@
     (1,1,1,1,0,1,1,new_dot)
   }
 
-  seg-display(width: width, fill-box: none, stroke-box: black, fill-on: fill-on, stroke-on: stroke-on, fill-off: fill-off, stroke-off: stroke-off, segments: to-display)
+  seg-display(width: width, fill-box: fill-box, stroke-box: stroke-box, fill-on: fill-on, stroke-on: stroke-on, fill-off: fill-off, stroke-off: stroke-off, segments: to-display)
 }
