@@ -16,6 +16,8 @@
 /// -> content
 #let seg-display(
   width: 16pt, 
+  fill-box: none,
+  stroke-box: black,
   fill-on: red, 
   fill-off: rgb("#eeeeee"), 
   stroke-on: (paint: black, thickness: 0.5pt, join: "bevel"), 
@@ -75,7 +77,8 @@
   box(
     height: width * 1.45815899582,
     width: width,
-    stroke: black,
+    fill: fill-box,
+    stroke: stroke-box
   )[
     #let base-h-spacing-left = 8.332455539497054%
     #let base-h-spacing-right = base-h-spacing-left + 67.782426778%
@@ -204,6 +207,8 @@
 /// -> content
 #let seg-display-digit(
   width: 16pt, 
+  fill-box: none,
+  stroke-box: black,
   fill-on: red, 
   fill-off: rgb("#eee"), 
   stroke-on: (paint: black, thickness: 0.5pt, join: "bevel"), 
@@ -246,5 +251,5 @@
     (1,1,1,1,0,1,1,new_dot)
   }
 
-  seg-display(width: width, fill-on: fill-on, stroke-on: stroke-on, fill-off: fill-off, stroke-off: stroke-off, segments: to-display)
+  seg-display(width: width, fill-box: none, stroke-box: black, fill-on: fill-on, stroke-on: stroke-on, fill-off: fill-off, stroke-off: stroke-off, segments: to-display)
 }
