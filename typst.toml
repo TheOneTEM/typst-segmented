@@ -1,0 +1,13 @@
+[package]
+name = "segmented"
+version = "0.1.1"
+entrypoint = "lib.typ"
+authors = ["Alvin Yang"]
+license = "MIT"
+description = "Render seven-segment displays with vector polygons."
+repository = "https://github.com/theonetem/typst-segmented"
+compiler = "0.15.0"
+exclude = [
+    "examples/*",
+    "*.pdf"
+]

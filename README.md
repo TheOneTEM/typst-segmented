@@ -1,6 +1,6 @@
 # segmented
 
-Rendering seven-segment displays directly in your documents with vector polygons.
+Render seven-segment displays with vector polygons.
 
 ## Examples
 
