@@ -1,148 +1,79 @@
 # segmented
 
-A Typst library for rendering seven-segment displays directly in your documents.
+Rendering seven-segment displays directly in your documents with vector polygons.
 
-The library provides two functions:
+## Examples
 
-- `segdisplay`: Render a seven-segment display with individually controlled segments.
-- `display-digit`: Render a numeric digit (0–9) using a seven-segment display.
+<!-- img width is set so the table gets evenly spaced by GitHub's css -->
+<table>
+    <tr>
+        <td>
+            <a href="./examples/example_numbers.typ">
+            <img src="examples/example_numbers.png" width="900px" alt="A row of seven-segment displays displaying the numbers 0 through 9, with the decimal point on for even numbers">
+            </a>
+        </td>
+        <td>
+            <a href="./examples/example_style.typ">
+            <img src="./examples/example_style.png" width="100px" alt="Seven-segment display showcasing styles.">
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>Displaying digits with <code> display-digit </code> </td>
+        <td>You can style the display too!</td>
+    </tr>
+</table>
 
-Both functions support customizable dimensions, fill colors, and stroke styles.
-
-The display maintains a fixed aspect ratio of approximately **478:697** (width:height).
-
-## Installation
-
-Import the library straight into your Typst document:
-
-(To be published to Typst Universe).
-
-In the meantime, `git clone` this repo and import locally:
-
-```typst
-#import "segmented/lib.typ": *
-```
+_Click on an example image to jump to the code._
 
 ## Usage
 
-### Basic Usage
-
-#### Displaying a digit
-
-Use `display-digit` to render a numeric digit:
+To use this package, simply add the following code to your document:
 
 ```typst
-#display-digit(digit: 0)
-#display-digit(digit: 1)
-#display-digit(digit: 2)
-#display-digit(digit: 3)
-#display-digit(digit: 4)
-#display-digit(digit: 5)
-#display-digit(digit: 6)
-#display-digit(digit: 7)
-#display-digit(digit: 8)
-#display-digit(digit: 9)
+#import "@preview/segmented:0.1.0": *
 ```
 
-The `digit` parameter accepts integers from `0` to `9`.
+**NOTE: This package is not yet listed on Typst Universe**. Instead, Clone the package into your local workspace:
 
-#### Displaying something else
+```bash
+git clone https://github.coom/TheOneTEM/typst-segmented
+```
 
-If you need to display something other than a digit, you can also use `segdisplay` to render some other pattern of segments:
+Then, import it locally:
 
 ```typst
-#segdisplay(
-  width: 24pt,
-  segments: (false, true, true, true, true, true, true, false),
-)
+#import "./typst-segmented/lib.typ": *
 ```
 
-## Documentation
+The package provides two functions: `seg-display` and `seg-display-digit`.
 
-### `display-digit`
+`seg-display` renders a 7-segment display where the status of each segment is individually specified. It expects the following arguments:
 
-Renders a numeric digit using a seven-segment display.
+- `width` (length | relative): The width of the display. Aspect ratio is fixed at 478:697; this ratio is taken from a technical diagram for an actual segmented display.
+- `stroke-box` (color | stroke): The stroke of the surrounding box.
+- `fill-box`: The fill of the surrounding box.
+- `fill-on`: The fill of the polygons when they are turned on.
+- `stroke-on (stroke): The stroke of the polygons when they are turned on.
+- `fill-off`: The fill of the polygons when they are turned off.
+- `stroke-off` (stroke): The stroke of the polygons when they are turned off.
+- `segments` (array): Boolean or integer (0..1) array that dictates which lights are turned on. One-hot, zero-indexed.
+- The following diagram illustrates the segment positions:
 
-```typst
-#display-digit(
-  width: 16pt,
-  fill-on: red,
-  stroke-on: (paint: black, thickness: 0.4pt, join: "bevel"),
-  fill-off: rgb("#5f5f5f"),
-  stroke-off: (paint: black, thickness: 0.4pt, join: "bevel"),
-  digit: 0,
-  dot: false,
-)
-```
+<a href="./examples/example_pinout.typ">
+    <img src="./examples/example_pinout.png" width="250px" alt="Seven-segment display showcasing styles.">
+</a>
 
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| `width` | Length | `16pt` | Width of the display. |
-| `fill-on` | Paint | `red` | Fill of active segments. |
-| `stroke-on` | Stroke | Black, 0.4pt | Stroke of active segments. |
-| `fill-off` | Paint | `rgb("#5f5f5f")` | Fill of inactive segments. |
-| `stroke-off` | Stroke | Black, 0.4pt | Stroke of inactive segments. |
-| `digit` | Integer | `0` | Digit to display, from 0 to 9. |
-| `dot` | Boolean or Integer | `false` | Whether the decimal point is active. |
+_click on the image to jump to the source code_.
 
-**Returns:** Typst content.
+`seg-display-digit` renders a 7-segment display where a digit is displayed. It takes the same arguments as `seg-display`, but `segments` is replaced by the named parameter `digits`, which is a digit from 0 to 9.
 
-**Assertions:**
-
-- `digit` must be an integer between `0` and `9`.
-- `dot` must be a Boolean or an integer between `0` and `1`.
-
-### `segdisplay`
-
-Renders a seven-segment display with individually configurable segments.
-
-```typst
-#segdisplay(
-  width: 16pt,
-  fill-on: red,
-  stroke-on: auto,
-  fill-off: rgb("#5f5f5f"),
-  stroke-off: auto,
-  segments: (false, false, false, false, false, false, false, false),
-)
-```
-
-| Parameter | Type | Default | Description |
-| --- | --- | --- | --- |
-| `width` | Length | `16pt` | Width of the display. |
-| `fill-on` | Paint | `red` | Fill of active segments. |
-| `stroke-on` | Stroke | `auto` | Stroke of active segments. |
-| `fill-off` | Paint | `rgb("#5f5f5f")` | Fill of inactive segments. |
-| `stroke-off` | Stroke | `auto` | Stroke of inactive segments. |
-| `segments` | Array | Eight `false` values | State of each segment. |
-
-**Returns:** Typst content.
-
-**Assertions:**
-
-- `segments` must be an array containing exactly eight elements.
-- Elements must consistently be either Booleans or integers (`0` or `1`).
-- Boolean and integer values cannot be mixed in the same array.
-
-## Segment Mapping
-
-The following diagram illustrates the segment positions:
-
-```text
-     ──── 0 ────
-    |           |
-    5           1
-    |           |
-    |──── 6 ────|
-    |           |
-    4           2
-    |           |
-    |──── 3 ────|  (7)
-```
+It also takes an argument `dot`, which is whether or not to turn on the decimal point (DP).
 
 ## Roadmap
 
-The following features are planned:
+The following features are planned but not yet implemented:
 
 - Some way to create presets for the displays.
 - Different styles of segmented displays.
+- Optional ability to style each segment for itself.
