@@ -7,24 +7,24 @@
 
 /// Renders a 7-segment display on your document. 
 ///
-/// - width (): The width of the display. Aspect ratio is fixed, about 478:697.
+/// - width (): The width of the display. Aspect ratio is fixed at 478:697; this ratio is taken from a technical diagram for an actual segmented display.
 /// - fill-on (): The fill of the polygons when they are turned on.
-/// - stroke-on (): The stroke of the polygons when they are turned on.
+/// - stroke-on (stroke): The stroke of the polygons when they are turned on.
 /// - fill-off (): The fill of the polygons when they are turned off.
-/// - stroke-off (): The stroke of the polygons when they are turned off.
-/// - segments (): Boolean array, dictates which segments are turned on. Goes by index.
+/// - stroke-off (stroke): The stroke of the polygons when they are turned off.
+/// - segments (array): Boolean or integer (0..1) array that dictates which lights are turned on. One-hot, zero-indexed. 
 /// -> content
-#let segdisplay(
+#let seg-display(
   width: 16pt, 
   fill-on: red, 
-  stroke-on: auto, 
-  fill-off: rgb("#5f5f5f"), 
-  stroke-off: auto, 
+  fill-off: rgb("#eeeeee"), 
+  stroke-on: (paint: black, thickness: 0.5pt, join: "bevel"), 
+  stroke-off: (paint: black, thickness: 0.3pt, join: "bevel"),
   segments: (false, false, false, false, false, false, false, false)
 ) = {
   // Assert type of light
-  assert.eq(type(segments), array)
-  assert.eq(segments.len(), 8)
+  assert.eq(type(segments), array, message: "Error: `segments` must be an array!")
+  assert.eq(segments.len(), 8, message: "Error: Array `segments` must have 8 members!")
 
   let bool_array = if type(segments.at(0)) == bool {
     true
@@ -34,11 +34,12 @@
 
   for light in segments {
     if bool_array {
-      assert(type(light) == bool)
+      assert(type(light) == bool, message: "Error: Inconsistent types in array `segments`: expected bool")
     } else {
-      assert(type(light) == int and 0 <= light and light <= 1)
+      assert(type(light) == int and 0 <= light and light <= 1, message: "Error: Inconsistent types in array `segments`: expected int: 0 or 1")
     }
   }
+
   let new-segments = if bool_array {
     segments
   } else {
@@ -76,8 +77,8 @@
     width: width,
     stroke: black,
   )[
-    #let base-h-spacing-left = 5.632455539497054%
-    #let base-h-spacing-right = base-h-spacing-left +  67.782426778%
+    #let base-h-spacing-left = 8.332455539497054%
+    #let base-h-spacing-right = base-h-spacing-left + 67.782426778%
 
     #let base-v-spacing-top = 9.25394548%
     #let base-v-spacing-bottom = 100% - base-v-spacing-top
@@ -201,17 +202,17 @@
 /// - digit (): The digit to display.
 /// - dot (): Whether or not to turn the dot on.
 /// -> content
-#let display-digit(
+#let seg-display-digit(
   width: 16pt, 
   fill-on: red, 
-  stroke-on: (paint: black, thickness: 0.4pt, join: "bevel"), 
-  fill-off: rgb("#5f5f5f"), 
-  stroke-off: (paint: black, thickness: 0.4pt, join: "bevel"),
+  fill-off: rgb("#eee"), 
+  stroke-on: (paint: black, thickness: 0.5pt, join: "bevel"), 
+  stroke-off: (paint: black, thickness: 0.3pt, join: "bevel"),
   digit: 0,
   dot: false
 ) = {
-  assert(type(digit) == int and 0 <= digit and digit <= 9)
-  assert(type(dot) == bool or (type(dot) == int and 0 <= dot and dot <= 1))
+  assert(type(digit) == int and 0 <= digit and digit <= 9, message: "Error: Invalid digit!")
+  assert(type(dot) == bool or (type(dot) == int and 0 <= dot and dot <= 1), message: "Error: `mismatched types in argument `dot` (expected bool or int(0..1))!")
 
   let new_dot = if type(dot) == int {
     dot
@@ -245,5 +246,5 @@
     (1,1,1,1,0,1,1,new_dot)
   }
 
-  segdisplay(width: width, fill-on: fill-on, stroke-on: stroke-on, fill-off: fill-off, stroke-off: stroke-off, segments: to-display)
+  seg-display(width: width, fill-on: fill-on, stroke-on: stroke-on, fill-off: fill-off, stroke-off: stroke-off, segments: to-display)
 }
