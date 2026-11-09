@@ -1,6 +1,6 @@
 # segmented
 
-Render seven-segment displays with vector polygons.
+Easily render seven-segment displays using vector polygons.
 
 ## Examples
 
